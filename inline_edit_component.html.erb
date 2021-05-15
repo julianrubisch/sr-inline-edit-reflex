@@ -1,0 +1,11 @@
+<%= component_controller :span do %>
+  <%= reflex_tag :arm, :span, class: class_names("border-bottom", {"d-none" => @editing}) do %>
+    <%= content %>
+  <% end %>
+  <%= form_for model, url: "#", html: {class: class_names("row row-cols-lg-auto g-3 align-items-center", {"d-none" => !@editing})} do |f| %>
+    <div class="input-group mb-3">
+      <%= f.text_field attribute, class: "form-control" %>
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+    </div>
+  <% end %>
+<% end %>

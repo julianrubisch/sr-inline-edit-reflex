@@ -4,7 +4,7 @@
     "exclude": []
   },
   "restart": {
-    "include": ["\\.rb$", "\\.js$"],
+    "include": ["\\.rb$", "\\.js$", "\\.erb$"],
     "exclude": ["^public/"]
   },
   "throttle": 10000
