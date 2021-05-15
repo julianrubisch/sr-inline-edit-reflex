@@ -33,31 +33,25 @@ class ApplicationReflex < StimulusReflex::Reflex; end
 class Book < ActiveRecord::Base; end
 
 class InlineEditComponent < ViewComponentReflex::Component  
+  attr_reader :model, :attribute
+  
   def initialize(model:, attribute:, editing: false)
     @model = model
     @attribute = attribute
     @editing = editing
   end
   
-  def key
-    SecureRandom.uuid
+  def collection_key
+    "#{model.id || SecureRandom.hex(16)}-#{attribute}"
   end
   
   def arm
     @editing = true
-  end
+  end    
   
   def disarm
     @editing = false
     refresh! selector
-  end
-  
-  def call
-    component_controller :span do
-      reflex_tag :arm, :span, class: class_names("border-bottom", {"d-none" => @editing}) do
-        content
-      end
-    end
   end
 end
 
@@ -98,6 +92,10 @@ class MiniApp < Rails::Application
   config.secret_token = "bf56dfbbe596131bfca591d1d9ed2021"
   config.session_store :cache_store
   config.hosts.clear
+  
+  config.to_prepare_blocks.each do |block|
+    block.call
+  end
 
   Rails.cache = ActiveSupport::Cache::RedisCacheStore.new(url: "redis://localhost:6379/1")
   Rails.logger = ActionCable.server.config.logger = Logger.new($stdout)
