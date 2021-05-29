@@ -33,12 +33,17 @@ class ApplicationReflex < StimulusReflex::Reflex; end
 class Book < ActiveRecord::Base; end
 
 class InlineEditComponent < ViewComponentReflex::Component  
-  attr_reader :model, :attribute
+  attr_reader :attribute
   
   def initialize(model:, attribute:, editing: false)
     @model = model
     @attribute = attribute
     @editing = editing
+  end
+  
+  def model
+    puts "Model: #{@model}"
+    @model
   end
   
   def collection_key
